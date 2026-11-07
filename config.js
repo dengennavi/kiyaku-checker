@@ -1,6 +1,6 @@
 // 公開前にここだけ設定する
 window.KIYAKU_CONFIG = {
-  siteUrl: "",                               // 公開URL（シェア用。空なら現在のURL）
+  siteUrl: "https://dengennavi.github.io/kiyaku-checker/",  // 公開URL（シェア用）
   // 先行登録（Googleフォーム「規約チェッカー 先行登録」→ スプレッドシート「規約チェッカー 集計」）
   signupAction: "https://docs.google.com/forms/d/e/1FAIpQLSfg6jGXK1tC2Xpo9RLOC_PXTSxaHh7mVqFeF77x-bwzl7WzMg/formResponse",
   signupEntry: "entry.1531211207",           // メールアドレス
