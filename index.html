@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>規約チェッカー｜貼るだけで気になる条項がわかる</title>
+<meta name="description" content="利用規約を貼るだけで、確認したい条項を色分けして根拠の法律つきで表示。規約はサーバーに送信されず、ブラウザの中だけで判定します。無料・登録不要。">
+<meta property="og:title" content="規約チェッカー｜貼るだけで気になる条項がわかる">
+<meta property="og:description" content="「猫をください」と書かれた規約、あなたは気づけますか？貼るだけで気になる条項を色分け。無料・登録不要・送信なし。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+<!-- S01 ホーム -->
+<section id="S01" class="screen">
+  <div class="hero">
+    <div class="logo">📄</div>
+    <h1>規約チェッカー</h1>
+    <p class="lead">その「同意する」、中身を知っていますか？<br>規約を貼るだけで、気になる条項を数秒で色分け</p>
+  </div>
+  <ul class="card legend">
+    <li><i class="dot danger"></i><b>要確認</b> — 同意前に必ず読みたい条項</li>
+    <li><i class="dot caution"></i><b>確認推奨</b> — 読んで判断したい条項</li>
+    <li><i class="dot safe"></i><b>該当なし</b> — 30項目のルールに当たらない条項</li>
+  </ul>
+  <button class="btn primary block" data-go="S02">判定をはじめる</button>
+  <button class="btn ghost block" id="demo">🐱 デモ規約で試す</button>
+  <p class="sub">登録不要・無料｜<a href="#" data-go="RULES">判定基準30項目を公開</a></p>
+  <p class="trust-big">🔒 貼った規約は1文字もサーバーに送信しません<br><small>判定はすべてあなたのブラウザの中で行います</small></p>
+  <p class="sub muted">公開ルールとの一致を機械的に表示するツールです。法的助言ではありません</p>
+</section>
+
+<!-- S02 規約入力 -->
+<section id="S02" class="screen" hidden>
+  <header class="bar"><button class="back" data-back>‹</button><h2>規約を入力</h2></header>
+  <div class="tabs" role="tablist">
+    <button class="tab on" role="tab" aria-selected="true">貼り付け</button>
+    <button class="tab off" role="tab" data-v2>URL <small>v2</small></button>
+    <button class="tab off" role="tab" data-v2>写真 <small>v2</small></button>
+  </div>
+  <div class="label-row"><label for="terms">利用規約の本文を貼ってください</label><span id="count">0字</span></div>
+  <textarea id="terms" placeholder="第1条（目的）本サービスは…&#10;第2条（利用登録）…"></textarea>
+  <p class="sub muted">｜ 長押し →「ペースト」で貼り付けできます</p>
+  <p id="v2msg" class="sub notice" hidden>URL・写真判定は v2 で追加予定です</p>
+  <button id="check" class="btn primary block">判定する</button>
+  <p class="sub muted center">URL・写真判定は v2 で追加予定</p>
+</section>
+
+<!-- S03 解析中 -->
+<section id="S03" class="screen center" hidden>
+  <div class="spinner"></div>
+  <p class="big">気になる条項を確認しています…</p>
+  <ul class="steps">
+    <li data-step="0">文章を条項ごとに分割</li>
+    <li data-step="1">判定辞書30項目と照合</li>
+    <li data-step="2">根拠となる条文を特定</li>
+  </ul>
+  <div class="progress"><div id="bar"></div></div>
+  <p class="sub muted">通常 3〜5秒</p>
+</section>
+
+<!-- S04 結果一覧 -->
+<section id="S04" class="screen" hidden>
+  <header class="bar"><button class="back" data-home>‹</button><h2>判定結果</h2><button class="icon" id="share" title="シェア">↗</button></header>
+  <p id="docTitle" class="sub muted"></p>
+  <div class="summary">
+    <div class="pill danger"><span id="nDanger">0</span><small>要確認</small></div>
+    <div class="pill caution"><span id="nCaution">0</span><small>確認推奨</small></div>
+    <div class="pill safe"><span id="nSafe">0</span><small>該当なし</small></div>
+  </div>
+  <p id="verdict" class="verdict"></p>
+  <ul id="findings" class="findings"></ul>
+  <details class="card safe-list"><summary id="safeHead"></summary><p id="safeList"></p></details>
+  <p class="sub"><a href="#" data-go="RULES">判定基準（30項目の公開ルール）›</a></p>
+  <button id="shareX" class="btn x block">𝕏 結果をシェア</button>
+  <button class="btn ghost block" data-go="S02" data-clear>別の規約を判定</button>
+
+  <div class="card signup">
+    <h3>🔔 使っているサービスの「損する変更」だけ通知</h3>
+    <p>課金・解約・返金・個人情報・免責の条項が<b>あなたに不利に変わったとき</b>だけ、変更前後の比較つきでメールします。</p>
+    <p class="sub muted left">※開発準備中の機能です。提供開始時期・対象サービスは、登録者の希望をもとに決めます。</p>
+    <form class="signupForm" data-source="result">
+      <label for="svc">見張ってほしいサービス（任意・複数可）</label>
+      <input id="svc" name="services" placeholder="例：Netflix、メルカリ、ジムの会員規約">
+      <div class="roles"><label><input type="radio" name="role" value="user" checked> 利用者として</label>
+      <label><input type="radio" name="role" value="business"> 自社の規約をチェックしたい（事業者・開発者）</label></div>
+      <div class="row"><input type="email" required placeholder="メールアドレス" autocomplete="email">
+      <button class="btn primary" type="submit">無料で先行登録</button></div>
+    </form>
+    <p class="ok signupMsg" hidden></p>
+  </div>
+</section>
+
+<!-- S05 条項詳細 -->
+<section id="S05" class="screen" hidden>
+  <header class="bar"><button class="back" data-back>‹</button><h2 id="dTitle"></h2></header>
+  <div id="dBadges" class="badges"></div>
+  <blockquote id="dQuote" class="quote-box"></blockquote>
+  <div id="dItems"></div>
+  <div class="card warn" id="dDisclaimer"></div>
+  <button class="btn ghost block" data-go="S06">誤検知を報告</button>
+</section>
+
+<!-- S06 誤検知報告 -->
+<section id="S06" class="screen" hidden>
+  <header class="bar"><button class="back" data-back>‹</button><h2>誤検知を報告</h2></header>
+  <div class="card"><small class="muted">対象</small><div id="rTarget"></div></div>
+  <label for="rText">どこが違いましたか（任意）</label>
+  <textarea id="rText" class="short" placeholder="例：この条項は別の意味で解釈できます／危険ではないと思います"></textarea>
+  <label class="check"><input type="checkbox" id="rNotify"> 判定辞書の更新通知を受け取る</label>
+  <input type="email" id="rEmail" placeholder="メールアドレス" autocomplete="email" hidden>
+  <p class="sub muted">※規約の本文は送信されません。対象の条項名・ルールID・該当語句・コメントのみ送信します。</p>
+  <button id="rSend" class="btn primary block">送信する</button>
+  <button class="btn link block" data-back>やめる</button>
+  <p id="rMsg" class="ok center" hidden></p>
+</section>
+
+<!-- E01 エラー -->
+<section id="E01" class="screen" hidden>
+  <header class="bar"><button class="back" data-back>‹</button><h2>判定できませんでした</h2></header>
+  <div class="center"><div class="err-icon">!</div><p id="eTitle" class="big"></p><p id="eBody"></p></div>
+  <div class="card"><b>よくある原因</b><ul><li>タイトルだけを貼っている</li><li>画像のままコピーした</li><li>途中で切れている</li></ul></div>
+  <button class="btn primary block" data-back>入力し直す</button>
+</section>
+
+<!-- 判定基準 -->
+<section id="RULES" class="screen" hidden>
+  <header class="bar"><button class="back" data-back>‹</button><h2>判定基準（30項目）</h2></header>
+  <p class="sub">消費者契約法・民法（定型約款）・個人情報保護法などをもとにした公開ルールです。<span id="dictVer"></span></p>
+  <ol id="ruleList" class="rule-list"></ol>
+</section>
+
+</main>
+<footer><p>規約チェッカーは、公開している30項目のチェックルールとの一致を機械的に表示する無料ツールです。個別の契約について法律上の有効・無効を判断するものではなく、法的助言ではありません。表示されない条項にも問題がある可能性があります。個別の紛争のご相談はお受けしていません。重要な契約は弁護士等の専門家、または消費生活センター（188）にご相談ください。入力された規約はサーバーに送信・保存されません。</p></footer>
+
+<script src="config.js"></script>
+<script src="rules.js"></script>
+<script src="engine.js"></script>
+<script src="demo.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
