@@ -10,6 +10,20 @@ async function verify(body, signature, secret) {
   return expected === signature;
 }
 
+// チャネルIDとシークレットから、15分有効のアクセストークンをその都度発行する（長期トークンを置かない）
+let cached = { token: null, until: 0 };
+async function getToken(env) {
+  if (cached.token && Date.now() < cached.until) return cached.token;
+  const res = await fetch("https://api.line.me/oauth2/v3/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ grant_type: "client_credentials", client_id: env.LINE_CHANNEL_ID, client_secret: env.LINE_CHANNEL_SECRET })
+  });
+  const d = await res.json();
+  cached = { token: d.access_token, until: Date.now() + (d.expires_in - 60) * 1000 };
+  return cached.token;
+}
+
 async function reply(token, replyToken, text) {
   const res = await fetch("https://api.line.me/v2/bot/message/reply", {
     method: "POST",
@@ -34,7 +48,7 @@ export default {
       else if (ev.type === "message" && ev.message.type === "text") text = replyFor(ev.message.text);
       else if (ev.type === "message" && ev.message.type === "image") text = IMAGE_REPLY;
       else if (ev.type === "message") text = replyFor("");
-      if (text) await reply(env.LINE_CHANNEL_ACCESS_TOKEN, ev.replyToken, text);
+      if (text) await reply(await getToken(env), ev.replyToken, text);
     }
     return new Response("ok");
   }
