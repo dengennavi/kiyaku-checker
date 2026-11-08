@@ -83,5 +83,5 @@
 
   const api = { analyze, splitClauses, splitSentences, normalize };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
-  else root.KiyakuEngine = api;
-})(this);
+  if (root) root.KiyakuEngine = api;
+})(typeof globalThis !== "undefined" ? globalThis : this);

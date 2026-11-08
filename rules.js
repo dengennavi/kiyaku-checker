@@ -231,5 +231,5 @@
   RULES.meta = META;
 
   if (typeof module !== "undefined" && module.exports) module.exports = RULES;
-  else root.KIYAKU_RULES = RULES;
-})(this);
+  if (root) root.KIYAKU_RULES = RULES;
+})(typeof globalThis !== "undefined" ? globalThis : this);

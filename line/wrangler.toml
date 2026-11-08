@@ -1,0 +1,6 @@
+# 規約チェッカー LINEボット（Cloudflare Workers・無料枠）
+# 秘密の値は wrangler secret put で入れる（このファイルには書かない）
+#   LINE_CHANNEL_SECRET / LINE_CHANNEL_ACCESS_TOKEN
+name = "kiyaku-line"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
