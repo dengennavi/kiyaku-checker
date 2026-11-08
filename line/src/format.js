@@ -70,8 +70,11 @@ export function formatResult(r) {
   return cut(lines.join("\n"), 4900);
 }
 
+export const CONTACT = "お問い合わせは、Xのダイレクトメッセージ（@kiyaku_checker）でお願いします🙏\nhttps://x.com/kiyaku_checker\n\nこのLINEは、送られた規約に自動で判定結果を返す専用です。";
+
 export function replyFor(text) {
   const t = (text || "").trim();
+  if (/(問い?合わせ|といあわせ|連絡先|運営者|削除し?て|退会)/.test(t) && t.length < 40) return CONTACT;
   if (/^(デモ|でも|demo|ためす|試す)$/i.test(t)) return formatResult(analyzeText(globalThis.KIYAKU_DEMO_TEXT));
   if (/^(使い方|つかいかた|ヘルプ|help|\?|？)$/i.test(t) || t.length < 40) return HELP;
   return formatResult(analyzeText(t));
