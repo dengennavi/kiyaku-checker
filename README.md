@@ -12,7 +12,7 @@
 - **Web**：上のページに規約を貼って「判定する」
 - **LINE**：[@823qtyqg](https://line.me/R/ti/p/@823qtyqg) を友だち追加して、トークに規約を貼って送る（「デモ」で試せます）
 - **X**：[@kiyaku_checker](https://x.com/kiyaku_checker)（お問い合わせはDMへ）
-- **作った話**：[Zennの記事](https://zenn.dev/kiyaku_checke/articles/2d45887a2b6c54)
+- **作った話**：[Zennの記事](https://zenn.dev/kiyaku_checke/articles/2d45887a2b6c54)（技術向け）／[noteの記事](https://note.com/kiyaku_checker/n/n982fe5b09ddd)（予算1万円・AIなしで作った理由）
 - [利用規約・プライバシーポリシー](https://dengennavi.github.io/kiyaku-checker/legal.html)（規約チェッカー自身で🔴0件・🟡0件）
 
 ## 特徴
