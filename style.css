@@ -103,3 +103,5 @@ label{font-weight:700;font-size:.9rem;display:block;margin:12px 0 6px}
 .roles input{width:auto;margin-right:6px}
 .btn.line{background:#06C755;border-color:#06C755;color:#fff;text-align:center;text-decoration:none}
 .line-cta h3{margin-top:0;font-size:1.05rem}
+
+.signup .perk{margin:.6em 0;padding:.5em .7em;border-radius:8px;background:rgba(255,196,0,.15);font-size:.95em}
