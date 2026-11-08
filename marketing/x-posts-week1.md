@@ -38,6 +38,9 @@ https://dengennavi.github.io/kiyaku-checker/
 
 「理由のわからない警告は出さない」が方針です。
 
+予算1万円・AIなしで作った理由はnoteに書きました。
+https://note.com/kiyaku_checker/n/n982fe5b09ddd
+
 ## Day6（11/13）参加型
 「この規約、ちょっと怖くない？」と思った条文があれば、引用リプで教えてください。
 
