@@ -8,6 +8,13 @@
 - 🟡 確認推奨：読んでから判断したい条項
 - 🟢 該当なし：30項目のルールに当たらない条項
 
+## 使い方
+- **Web**：上のページに規約を貼って「判定する」
+- **LINE**：[@823qtyqg](https://line.me/R/ti/p/@823qtyqg) を友だち追加して、トークに規約を貼って送る（「デモ」で試せます）
+- **X**：[@kiyaku_checker](https://x.com/kiyaku_checker)（お問い合わせはDMへ）
+- **作った話**：[Zennの記事](https://zenn.dev/kiyaku_checke/articles/2d45887a2b6c54)
+- [利用規約・プライバシーポリシー](https://dengennavi.github.io/kiyaku-checker/legal.html)（規約チェッカー自身で🔴0件・🟡0件）
+
 ## 特徴
 - **貼った規約はサーバーに送りません。** 判定はすべてブラウザの中で行います
 - **判定ルール30項目を公開しています**（`rules.js`）。消費者契約法・民法548条の2（定型約款）・個人情報保護法などをもとにしています
@@ -21,3 +28,4 @@
 - ビルド不要の静的サイト（HTML・CSS・JavaScript）
 - テスト：`node test/run.js`
 - 精度の検証：`docs/validation-2026-11-07.md`
+- LINEボット：`line/`（Cloudflare Workers。Webと同じ判定エンジンを使う）
