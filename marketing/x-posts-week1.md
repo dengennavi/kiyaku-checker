@@ -2,17 +2,20 @@
 
 社名は出さない。1日1本。投稿したら日付を書く。
 
+投稿のしかた：Claudeが投稿文をクリップボードに入れる → いつものChrome（シークレットではない）のXで、左下が規約チェッカーか確認 →「What's happening?」に Ctrl+V →「Post」。
+サイトのURLには日付の印（?x=月日）を付ける。付けないとXが古いカード情報（画像なし）を使う（11/9に確認）。
+
 ## Day1（11/8）✅ 投稿済み
 ツールの紹介（LINEの猫の画面つき）＋ Zenn記事の紹介
 
-## Day2（11/9）豆知識
+## Day2（11/9）豆知識 ✅ 投稿済み（画像つきカードで表示）
 「一切の責任を負いません」は、消費者相手だと無効になることがあります（消費者契約法8条）。
 
 ただし「故意・重過失の場合を除く」と別の条に書いてあれば話は別。
 
 規約は1つの条ではなく、全体で読むのが大事です。
 
-https://dengennavi.github.io/kiyaku-checker/
+https://dengennavi.github.io/kiyaku-checker/?x=1109
 
 ## Day3（11/10）あるある
 サブスクの規約で見てほしいのは「自動更新」と「日割り返金」。
@@ -29,7 +32,7 @@ https://dengennavi.github.io/kiyaku-checker/
 規約チェッカーに貼ると、ちゃんと🔴で光ります🐱
 （架空の規約です）
 
-https://dengennavi.github.io/kiyaku-checker/
+https://dengennavi.github.io/kiyaku-checker/?x=1111
 
 ## Day5（11/12）裏側
 規約チェッカーの判定ルール30項目は、全部公開しています。
