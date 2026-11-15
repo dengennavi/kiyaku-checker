@@ -53,6 +53,7 @@
   <p><b>解約の前に、規約の「損するところ」も確認</b></p>
   <p class="muted">途中で解約すると違約金がかかるもの、解約するとポイントがすぐ消えるものがあります。人気サービスの解約・返金のルールを、規約の条文つきでまとめています。</p>
   <a class="btn primary block" href="../services/">サービス別 規約まとめを見る</a>
+  <a class="btn ghost block" href="../billing/">カード明細の請求名 辞典（APPLE.COM/BILL など）</a>
   <a class="btn ghost block" href="../">規約チェッカー（規約を貼ってチェック）</a>
 </section>
 
@@ -99,6 +100,7 @@
         (times >= 2 ? '　毎月払っている可能性があります' : '') + '</p>' +
         (s.desc ? '<p>' + esc(s.desc) + '</p>' : '') +
         '<p><b>解約する場所：</b>' + esc(s.how) + '</p>' +
+        (s.bill ? '<p><a href="../billing/' + s.bill + '.html">この請求名について詳しく ›</a></p>' : '') +
         (s.page ? '<p><a href="../services/' + s.page + '.html">解約・返金のルールを規約で確認 ›</a></p>' : '') +
         '<details><summary class="small">明細の該当行</summary><ul class="small">' +
         f.lines.map(function (l) { return '<li>' + esc(l.text) + '</li>'; }).join("") + '</ul></details>' +

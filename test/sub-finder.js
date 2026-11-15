@@ -18,7 +18,10 @@ expect(n.length === 1 && n[0].lines.length === 2, "同じサービスは1件に�
 expect(F.amountOf("2026/10/03 NETFLIX.COM 1,590") === 1590, "金額を読む（1,590）");
 expect(F.amountOf("APPLE.COM/BILL ¥400") === 400, "金額を読む（¥400）");
 expect(F.amountOf("ADOBE 2,380円") === 2380, "金額を読む（2,380円）");
+expect(ids("PAYPAL *SPOTIFYJAPAN 980").join() === "spotify", "PAYPAL *サービス名 は後ろのサービスとして数える");
+expect(ids("PAYPAL *SOMESHOP 1,200").join() === "paypal", "後ろが分からない PayPal は PayPal として出す");
 const fs = require("fs");
+for (const s of F.SUBS) if (s.bill) expect(fs.existsSync(__dirname + "/../billing/" + s.bill + ".html"), "請求名ページがある：" + s.bill);
 for (const s of F.SUBS) if (s.page) expect(fs.existsSync(__dirname + "/../services/" + s.page + ".html"), "まとめページがある：" + s.page);
 console.log(fail ? `\n${fail} 件失敗` : "\nすべて成功");
 process.exit(fail ? 1 : 0);

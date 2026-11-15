@@ -95,14 +95,74 @@ def index_page(services):
     return "services/index.html", "".join(out)
 
 
+def head2(title, desc, path, crumb):
+    return head(title, desc, path).replace(
+        '<header class="crumb"><a href="../">規約チェッカー</a> › <a href="./">サービス別 規約まとめ</a></header>',
+        f'<header class="crumb"><a href="../">規約チェッカー</a> › <a href="./">明細の請求名</a>{(" › " + e(crumb)) if crumb else ""}</header>')
+
+
+FINDER = """<section class="card cta">
+  <p><b>ほかにも払い続けているサブスクがないか、まとめて探す</b></p>
+  <p class="muted">カードの明細を貼るだけで、入っているサブスクと解約する場所が分かります。明細はどこにも送信しません。</p>
+  <a class="btn primary block" href="../sub-finder/">サブスク発見（明細を貼るだけ・無料）</a>
+  <a class="btn ghost block" href="../services/">サービス別 解約・返金のルール</a>
+</section>
+"""
+
+
+FOOT_BILL = FOOT.replace("このページは、各社が公開している利用規約の一部を引用し、内容をわかりやすく言い換えたものです。法的助言ではありません。規約は変わることがあるため、必ず公式ページで最新の内容を確認してください。",
+    "このページは、各社の公式ヘルプをもとに、カード明細の請求名をわかりやすくまとめたものです。手順や金額は変わることがあるため、必ず公式の案内で確認してください。不正利用が心配なときは、すぐにカード会社に連絡してください。")
+
+
+def billing_page(b, names):
+    path = f"billing/{b['slug']}.html"
+    out = [head2(b["title"], b["desc"], path, b["label"])]
+    out.append(f"<h1>{e(b['h1'])}</h1>\n<p>{e(b['lead'])}</p>\n")
+    for sec in b["sections"]:
+        out.append(f"<section class=\"clause\"><h2>{e(sec['h2'])}</h2>\n")
+        if "table" in sec:
+            out.append('<table class="desc-table"><tr><th>明細の名前</th><th>サービス</th></tr>\n')
+            out += [f"<tr><td><code>{e(a)}</code></td><td>{e(c)}</td></tr>\n" for a, c in sec["table"]]
+            out.append("</table>\n")
+        if "list" in sec:
+            # list の項目は手で書いた文。<b> だけ許す
+            out.append("<ul>\n" + "".join("  <li>" + e(x).replace("&lt;b&gt;", "<b>").replace("&lt;/b&gt;", "</b>") + "</li>\n" for x in sec["list"]) + "</ul>\n")
+        out.append("</section>\n")
+    if b["related"]:
+        out.append('<section class="card"><p class="label">解約・返金のルール（規約の条文つき）</p><ul>\n')
+        out += [f'  <li><a href="../services/{r}.html">{e(names.get(r, r))}</a></li>\n' for r in b["related"]]
+        out.append("</ul></section>\n")
+    out.append('<p class="muted small">出典：' + "／".join(f'<a href="{e(x["url"])}" target="_blank" rel="noopener">{e(x["name"])}</a>' for x in b["sources"]) + "（2026-11-15 に確認）。手順や金額は変わることがあるため、最新の内容は公式の案内で確認してください。</p>\n")
+    out.append(FINDER)
+    out.append(FOOT_BILL)
+    return path, "".join(out)
+
+
+def billing_index(items):
+    title = "カード明細の請求名 辞典｜身に覚えのない請求は何？"
+    desc = "カード明細の「APPLE.COM/BILL」「GOOGLE *」「PAYPAL *」など、分かりにくい請求名が何の請求かを、各社の公式ヘルプをもとにまとめました。"
+    out = [head2(title, desc, "billing/", "")]
+    out.append("<h1>カード明細の請求名 辞典<br><small>身に覚えのない請求は何？</small></h1>\n")
+    out.append("<p>カードの明細には、サービス名ではなく会社名や決済の名前が出ることがあります。分かりにくい請求名が何の請求かを、各社の公式ヘルプをもとにまとめました。</p>\n<ul class=\"svc\">\n")
+    out += [f'  <li><a href="{b["slug"]}.html"><b>{e(b["label"])}</b><span class="muted">{e(b["h1"])}</span></a></li>\n' for b in items]
+    out.append("</ul>\n")
+    out.append(FINDER)
+    out.append(FOOT_BILL)
+    return "billing/index.html", "".join(out)
+
+
 def main():
     services = json.load(open(os.path.join(ROOT, "data/services.json"), encoding="utf-8"))
     os.makedirs(os.path.join(ROOT, "services"), exist_ok=True)
+    billing = json.load(open(os.path.join(ROOT, "data/billing.json"), encoding="utf-8"))
+    names = {s["slug"]: s["name"] for s in services}
+    os.makedirs(os.path.join(ROOT, "billing"), exist_ok=True)
     pages = [service_page(s) for s in services] + [index_page(services)]
+    pages += [billing_page(b, names) for b in billing] + [billing_index(billing)]
     for path, body in pages:
         with open(os.path.join(ROOT, path if path.endswith(".html") else path + "index.html"), "w", encoding="utf-8") as f:
             f.write(body)
-    urls = ["", "legal.html", "sub-finder/", "services/"] + [f"services/{s['slug']}.html" for s in services]
+    urls = ["", "legal.html", "sub-finder/", "billing/", "services/"] + [f"billing/{b['slug']}.html" for b in billing] + [f"services/{s['slug']}.html" for s in services]
     lastmod = max(s["checked"] for s in services)
     with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
