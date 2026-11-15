@@ -66,7 +66,7 @@ def service_page(s):
     desc = f"{short}の利用規約（{s['doc']}）から、解約・返金・自動更新・料金や規約の変更について書かれた部分を引用し、わかりやすくまとめました。"
     out = [head(title, desc, path)]
     out.append(f"<h1>{e(short)}の解約・返金・自動更新<br><small>利用規約に書いてあること</small></h1>\n")
-    out.append(f'<p class="muted">出典：<a href="{e(s["url"])}" target="_blank" rel="noopener">{e(s["doc"])}</a>（最終更新 {e(s["updated"])}）。{e(s["checked"])} に確認。</p>\n')
+    out.append(f'<p class="muted">出典：<a href="{e(s["url"])}" target="_blank" rel="noopener">{e(s["doc"])}</a>{("（最終更新 " + e(s["updated"]) + "）") if s["updated"] else ""}。{e(s["checked"])} に確認。</p>\n')
     out.append('<section class="card"><p class="label">ポイント</p><ul>\n')
     out += [f"  <li>{e(x)}</li>\n" for x in s["summary"]]
     out.append("</ul></section>\n")
