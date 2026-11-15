@@ -119,3 +119,12 @@ label{font-weight:700;font-size:.9rem;display:block;margin:12px 0 6px}
 .svc li a{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;color:inherit;text-decoration:none}
 .svc li a span{display:block;font-size:.85rem}
 .cta{margin-top:32px}
+/* サブスク発見（sub-finder/） */
+.small{font-size:.85rem}
+.safe-note{background:var(--safe-bg);color:var(--safe);border-radius:10px;padding:8px 12px;font-size:.9rem;font-weight:600}
+.check{margin:0;padding-left:1.2em}
+.check li{margin:6px 0}
+.hit{border-left:6px solid var(--primary)}
+.hit-name{font-weight:800;font-size:1.1rem;margin:0}
+.hit p{margin:6px 0}
+details summary{cursor:pointer;color:var(--muted)}

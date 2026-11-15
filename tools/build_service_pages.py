@@ -89,6 +89,7 @@ def index_page(services):
     for s in services:
         out.append(f'  <li><a href="{s["slug"]}.html"><b>{e(s["name"])}</b><span class="muted">{e(s["summary"][0])}</span></a></li>\n')
     out.append("</ul>\n")
+    out.append('<p class="card">💳 何に入っているか分からないときは <a href="../sub-finder/">サブスク発見（カード明細を貼るだけ）</a> で探せます。</p>\n')
     out.append(CTA)
     out.append(FOOT)
     return "services/index.html", "".join(out)
@@ -101,7 +102,7 @@ def main():
     for path, body in pages:
         with open(os.path.join(ROOT, path if path.endswith(".html") else path + "index.html"), "w", encoding="utf-8") as f:
             f.write(body)
-    urls = ["", "legal.html", "services/"] + [f"services/{s['slug']}.html" for s in services]
+    urls = ["", "legal.html", "sub-finder/", "services/"] + [f"services/{s['slug']}.html" for s in services]
     lastmod = max(s["checked"] for s in services)
     with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')

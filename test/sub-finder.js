@@ -1,0 +1,24 @@
+const F = require("../sub-finder/subs.js");
+let fail = 0;
+const expect = (c, m) => { console.log((c ? "  ✔ " : "  ✘ ") + m); if (!c) fail++; };
+const ids = t => F.find(t).map(h => h.sub.id);
+
+console.log("SUBS:", F.SUBS.length);
+expect(new Set(F.SUBS.map(s => s.id)).size === F.SUBS.length, "IDが重複しない");
+expect(ids("2026/10/03 NETFLIX.COM 1,590").join() === "netflix", "英字の請求名");
+expect(ids("ｱﾄﾞﾋﾞ 2,380").join() === "adobe", "半角カナもそろえて見つける");
+expect(ids("ｎｅｔｆｌｉｘ").join() === "netflix", "全角英字も見つける");
+expect(ids("GOOGLE *YouTubePremium 1,280").join() === "youtube", "GOOGLE*YOUTUBE は YouTube として数える");
+expect(ids("GOOGLE *Google One 250").join() === "google", "GOOGLE だけなら Google");
+expect(ids("MICROSOFT*XBOX 850").join() === "xbox", "MICROSOFT*XBOX は Xbox");
+expect(ids("AMAZON.CO.JP 3,980").length === 0, "Amazon の普通の買い物は数えない");
+expect(ids("スーパーマーケット 3,214\nコンビニ 680").length === 0, "サブスクでない店は数えない");
+const n = F.find("NETFLIX.COM 1,590\nNETFLIX.COM 1,590");
+expect(n.length === 1 && n[0].lines.length === 2, "同じサービスは1件にまとめ、回数を数える");
+expect(F.amountOf("2026/10/03 NETFLIX.COM 1,590") === 1590, "金額を読む（1,590）");
+expect(F.amountOf("APPLE.COM/BILL ¥400") === 400, "金額を読む（¥400）");
+expect(F.amountOf("ADOBE 2,380円") === 2380, "金額を読む（2,380円）");
+const fs = require("fs");
+for (const s of F.SUBS) if (s.page) expect(fs.existsSync(__dirname + "/../services/" + s.page + ".html"), "まとめページがある：" + s.page);
+console.log(fail ? `\n${fail} 件失敗` : "\nすべて成功");
+process.exit(fail ? 1 : 0);
