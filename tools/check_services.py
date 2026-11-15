@@ -6,7 +6,9 @@
 結果:
   - 引用が1か所でも見つからない → 終了コード 1（GitHub Actions が失敗としてメールで知らせる）
   - ページが読めなかっただけ（ロボット除けなど） → 「確認できず」と表示するが、失敗にはしない
-  - 結果は check-result.md にも書く（Actions の画面とメールで読める）
+  - 結果は check-result.md と check/status.json・check/report.md に書く
+  - 日本向けの規約で比べるため、このPC（日本）で毎日動かす（tools/run_daily_check.sh）。
+    GitHub のサーバー（米国）から読むと米国向けの規約が出て、誤って「変更あり」になる
 """
 import html
 import json
@@ -73,6 +75,14 @@ def main():
     lines.append(f"OK {len(ok)}件／変更あり {len(changed)}件／確認できず {len(unreadable)}件")
     report = "\n".join(lines)
     with open(os.path.join(ROOT, "check-result.md"), "w", encoding="utf-8") as f:
+        f.write(report + "\n")
+    status = {"changed": {s["slug"]: [it["label"] for it in m] for s, m in changed},
+              "unreadable": [s["slug"] for s in unreadable]}
+    os.makedirs(os.path.join(ROOT, "check"), exist_ok=True)
+    with open(os.path.join(ROOT, "check/status.json"), "w", encoding="utf-8") as f:
+        json.dump(status, f, ensure_ascii=False, indent=1)
+        f.write("\n")
+    with open(os.path.join(ROOT, "check/report.md"), "w", encoding="utf-8") as f:
         f.write(report + "\n")
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:

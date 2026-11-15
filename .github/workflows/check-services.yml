@@ -1,20 +1,24 @@
-name: 規約まとめページの毎日チェック
+name: 規約まとめページのチェック結果
 
+# チェック自体はこのPC（日本）で毎日動かす（tools/run_daily_check.sh）。
+# 結果の check/status.json が送られてきたら中身を見て、
+# 「変更あり」が1件でもあれば失敗にする → GitHub からメールで知らせが届く。
 on:
-  schedule:
-    - cron: "0 21 * * *"   # 毎日 朝6時（日本時間）
+  push:
+    paths:
+      - check/status.json
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  check:
+  report:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: 公式の規約と引用を照らし合わせる
-        env:
-          CHROME: google-chrome
-        run: python3 tools/check_services.py
+      - name: 結果を確認
+        run: |
+          cat check/report.md >> "$GITHUB_STEP_SUMMARY"
+          cat check/report.md
+          python3 -c "import json,sys; c=json.load(open('check/status.json'))['changed']; sys.exit(1 if c else 0)"
