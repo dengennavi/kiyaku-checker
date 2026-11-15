@@ -129,5 +129,5 @@
 
   var api = { SUBS: SUBS, find: find, norm: norm, amountOf: amountOf };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
-  else root.SubFinder = api;
-})(this);
+  if (root) root.SubFinder = api;
+})(typeof globalThis !== "undefined" ? globalThis : this);
