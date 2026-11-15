@@ -24,7 +24,7 @@ export const HELP = [
   "",
   "まず試すなら「デモ」と送ってください🐱",
   "",
-  "💳 カードの利用明細を貼って送ると、払い続けているサブスクを探します（「サブスク」と送ると使い方）",
+  "💳 カードの利用明細を貼って送ると、毎月の引き落とし（サブスク）が何かを調べます（「引き落とし」と送ると使い方）",
   "",
   "※送られた規約は判定にだけ使い、保存しません。"
 ].join("\n");
@@ -78,12 +78,13 @@ export const CONTACT = "お問い合わせは、Xのダイレクトメッセー�
 const SF = globalThis.SubFinder;
 
 export const SUB_HELP = [
-  "💳 サブスク発見の使い方",
+  "💳 毎月の引き落としを調べる",
+  "（使っていないのに払い続けている月額サービス＝サブスクを探します）",
   "",
   "クレジットカードの利用明細（Webやアプリの明細の文字）をコピーして、このトークに貼って送ってください。",
   "何か月分かまとめて貼ると、毎月払っているものが分かりやすくなります。",
   "",
-  "NETFLIX・APPLE.COM/BILL・GOOGLE などの請求名から、入っているサブスクと解約する場所をお返しします。",
+  "NETFLIX・APPLE.COM/BILL・GOOGLE などの請求名から、何のサービスか・どこで解約するかをお返しします。",
   "",
   "※カード番号や氏名は貼らなくて大丈夫です。送られた明細は判定にだけ使い、保存しません。",
   "",
@@ -95,7 +96,7 @@ export const SUB_HELP = [
 const looksLikeTerms = t => /第\s*[0-9０-９一二三四五六七八九十百]+\s*条/.test(t) || /規約|約款/.test(t);
 
 export function formatSubs(found) {
-  const lines = ["💳 見つかったサブスク：" + found.length + "件", ""];
+  const lines = ["💳 毎月の引き落とし（サブスク）が " + found.length + "件 見つかりました", ""];
   for (const f of found.slice(0, 10)) {
     const s = f.sub, amounts = f.lines.map(l => l.amount).filter(Boolean);
     const max = amounts.length ? Math.max(...amounts) : null;
@@ -115,7 +116,7 @@ export function replyFor(text) {
   const t = (text || "").trim();
   if (/(問い?合わせ|といあわせ|連絡先|運営者|削除し?て|退会)/.test(t) && t.length < 40) return CONTACT;
   if (/^(デモ|でも|demo|ためす|試す)$/i.test(t)) return formatResult(analyzeText(globalThis.KIYAKU_DEMO_TEXT));
-  if (/(サブスク|さぶすく|明細)/.test(t) && t.length < 40) return SUB_HELP;
+  if (/(サブスク|さぶすく|明細|引き?落とし|ひきおとし|月額|定額|解約)/.test(t) && t.length < 40) return SUB_HELP;
   if (/^(使い方|つかいかた|ヘルプ|help|\?|？)$/i.test(t)) return HELP;
   if (!looksLikeTerms(t)) {
     const found = SF.find(t);
