@@ -13,7 +13,7 @@
 | note | ✅ 2026-11-08 https://note.com/kiyaku_checker 開設、記事「予算1万円・AIなしで…100人を集める作戦」公開 https://note.com/kiyaku_checker/n/n982fe5b09ddd （#個人開発 #規約 #同意） |
 | 利用規約・プライバシーポリシー | ✅ 2026-11-08 /legal.html。自分のツールで🔴0件・🟡0件。問い合わせはXのDMのみ（LINEで「問い合わせ」と送るとXを案内） |
 | LINE公式アカウント | ✅ 2026-11-08「規約チェッカー」@823qtyqg。トークに規約を送ると判定を返信（Cloudflare Workers・無料） |
-| 検索（SEO） | ✅ 2026-11-15 Search Console に登録（URLプレフィックス、HTMLファイル google68e4de3ec3c192db.html で確認。消さないこと）、sitemap.xml を送信（直後は「取得できませんでした」。数日で変わるか見る）。canonical も追加 |
+| 検索（SEO） | ✅ 2026-11-15 Search Console に登録（URLプレフィックス、HTMLファイル google68e4de3ec3c192db.html で確認。消さないこと）、sitemap.xml を送信（直後は「取得できませんでした」。数日で変わるか見る）。canonical も追加。11-15 サービス別の規約まとめページ4件（Netflix・Spotify・YouTube Premium・Apple）を公開（/services/、data/services.json → tools/build_service_pages.py）。引用は公式本文と一字一句一致を確認 |
 | 使ったお金 | 0円（残り10,000円） |
 | 登録（LINE友だち＋メール先行登録） | 0名 / 100名 |
 | 次の一手 | ⑤ ~~Xで記事を紹介~~ ✅ → 11/9〜11/14 は marketing/x-posts-week1.md を1日1本投稿（11/9 Day2 ✅）。7日間は機能を足さず、メール登録数とLINE友だち数を見る（11/14に振り返り）→ 11/15から「規約変更の見張り」を作る（下の節） |
