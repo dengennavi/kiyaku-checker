@@ -33,9 +33,48 @@ async function reply(token, replyToken, text) {
   if (!res.ok) console.log("reply failed", res.status);
 }
 
+// トーク画面の下に出すメニュー（リッチメニュー）。画像は tools/make_richmenu.py で作り、サイトに置いてある
+const RICHMENU_IMAGE = "https://dengennavi.github.io/kiyaku-checker/line/richmenu.png";
+const RICHMENU = {
+  size: { width: 2500, height: 843 },
+  selected: true,
+  name: "kiyaku-menu-v1",
+  chatBarText: "メニュー",
+  areas: [
+    { bounds: { x: 0, y: 0, width: 833, height: 843 }, action: { type: "message", text: "使い方" } },
+    { bounds: { x: 833, y: 0, width: 834, height: 843 }, action: { type: "message", text: "引き落とし" } },
+    { bounds: { x: 1667, y: 0, width: 833, height: 843 }, action: { type: "uri", uri: "https://dengennavi.github.io/kiyaku-checker/services/" } }
+  ]
+};
+
+// /setup-menu を開くと、まだ既定のメニューがなければ作って全員に出す（あれば何もしない）
+async function setupMenu(env) {
+  const token = await getToken(env);
+  const auth = { Authorization: `Bearer ${token}` };
+  const cur = await fetch("https://api.line.me/v2/bot/user/all/richmenu", { headers: auth });
+  if (cur.ok) return "already set: " + (await cur.json()).richMenuId;
+  const made = await fetch("https://api.line.me/v2/bot/richmenu", {
+    method: "POST", headers: { ...auth, "Content-Type": "application/json" }, body: JSON.stringify(RICHMENU)
+  });
+  if (!made.ok) return "create failed " + made.status + " " + (await made.text());
+  const { richMenuId } = await made.json();
+  const png = await fetch(RICHMENU_IMAGE);
+  if (!png.ok) return "image fetch failed " + png.status;
+  const up = await fetch(`https://api-data.line.me/v2/bot/richmenu/${richMenuId}/content`, {
+    method: "POST", headers: { ...auth, "Content-Type": "image/png" }, body: await png.arrayBuffer()
+  });
+  if (!up.ok) return "upload failed " + up.status + " " + (await up.text());
+  const def = await fetch(`https://api.line.me/v2/bot/user/all/richmenu/${richMenuId}`, { method: "POST", headers: auth });
+  if (!def.ok) return "set default failed " + def.status + " " + (await def.text());
+  return "done: " + richMenuId;
+}
+
 export default {
   async fetch(request, env) {
-    if (request.method !== "POST") return new Response("kiyaku-line ok");
+    if (request.method !== "POST") {
+      if (new URL(request.url).pathname === "/setup-menu") return new Response(await setupMenu(env));
+      return new Response("kiyaku-line ok");
+    }
     const body = await request.text();
     if (!(await verify(body, request.headers.get("x-line-signature"), env.LINE_CHANNEL_SECRET))) {
       return new Response("bad signature", { status: 401 });
