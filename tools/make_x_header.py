@@ -26,21 +26,22 @@ img = Image.new("RGB", (W, H), BG)
 d = ImageDraw.Draw(img)
 
 big = font(66, 800)
-d.text((LEFT, 70), "その「同意する」、", font=big, fill=WHITE)
-d.text((LEFT, 155), "中身を知っていますか？", font=big, fill=WHITE)
+d.text((LEFT, 70), "毎月の引き落とし、", font=big, fill=WHITE)
+d.text((LEFT, 155), "何に払っているか分かりますか？", font=big, fill=WHITE)
 
-d.text((LEFT, 265), "規約を貼るだけで、気になる条項を色分け", font=font(36, 600), fill=SUB)
+d.text((LEFT, 265), "カード明細を貼るだけで、払っている先と解約先が分かる", font=font(34, 600), fill=SUB)
 
-# 色分けの見本（白い帯の中に3色。帯の幅は中身に合わせる）
+# 安心ポイント（白い帯の中に3つ。帯の幅は中身に合わせる）
 y = 335
-lab = font(32, 800)
-items = [(RED, "要確認"), (YELLOW, "確認推奨"), (GREEN, "該当なし")]
-width = 40 + sum(36 + d.textlength(t, font=lab) for _, t in items) + 50 * 2 + 40
+lab = font(30, 800)
+items = ["無料", "明細は送信されません", "LINEでも使える"]
+width = 40 + sum(36 + d.textlength(t, font=lab) for t in items) + 44 * 2 + 40
 d.rounded_rectangle((LEFT, y, LEFT + width, y + 76), radius=38, fill=WHITE)
 x = LEFT + 40
-for color, text in items:
-    d.ellipse((x, y + 26, x + 24, y + 50), fill=color)
-    d.text((x + 36, y + 15), text, font=lab, fill=color)
-    x += 36 + d.textlength(text, font=lab) + 50
+for text in items:
+    d.ellipse((x, y + 26, x + 24, y + 50), fill=GREEN)
+    d.line((x + 6, y + 38, x + 11, y + 43, x + 19, y + 32), fill=WHITE, width=4)
+    d.text((x + 36, y + 17), text, font=lab, fill=BG)
+    x += 36 + d.textlength(text, font=lab) + 44
 
 img.save(sys.argv[1])
