@@ -12,13 +12,16 @@ async function verify(body, signature, secret) {
 
 // チャネルIDとシークレットから、15分有効のアクセストークンをその都度発行する（長期トークンを置かない）
 let cached = { token: null, until: 0 };
-async function getToken(env) {
-  if (cached.token && Date.now() < cached.until) return cached.token;
-  const res = await fetch("https://api.line.me/oauth2/v3/token", {
+function requestToken(env) {
+  return fetch("https://api.line.me/oauth2/v3/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ grant_type: "client_credentials", client_id: env.LINE_CHANNEL_ID, client_secret: env.LINE_CHANNEL_SECRET })
   });
+}
+async function getToken(env) {
+  if (cached.token && Date.now() < cached.until) return cached.token;
+  const res = await requestToken(env);
   const d = await res.json();
   cached = { token: d.access_token, until: Date.now() + (d.expires_in - 60) * 1000 };
   return cached.token;
@@ -47,6 +50,17 @@ const RICHMENU = {
   ]
 };
 
+// 毎朝のチェック用：/health でIDとシークレットから実際にトークンを発行してみる（中身は返さない・キャッシュも使わない）
+async function health(env) {
+  let status = 0;
+  try {
+    const res = await requestToken(env);
+    status = res.status;
+    if (res.ok && (await res.json()).access_token) return Response.json({ line: "ok" });
+  } catch (e) {}
+  return Response.json({ line: "ng", status }, { status: 503 });
+}
+
 // /setup-menu を開くと、まだ既定のメニューがなければ作って全員に出す（あれば何もしない）
 async function setupMenu(env) {
   const token = await getToken(env);
@@ -72,7 +86,9 @@ async function setupMenu(env) {
 export default {
   async fetch(request, env) {
     if (request.method !== "POST") {
-      if (new URL(request.url).pathname === "/setup-menu") return new Response(await setupMenu(env));
+      const path = new URL(request.url).pathname;
+      if (request.method === "GET" && path === "/health") return health(env);
+      if (path === "/setup-menu") return new Response(await setupMenu(env));
       return new Response("kiyaku-line ok");
     }
     const body = await request.text();
