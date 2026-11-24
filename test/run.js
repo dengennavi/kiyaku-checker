@@ -6,8 +6,8 @@ const run = f => E.analyze(fs.readFileSync(path.join(__dirname, "../samples", f)
 const has = (r, id, sev) => r.findings.some(x => x.ruleId === id && (!sev || x.sev === sev));
 
 console.log("RULES:", RULES.length);
-expect(RULES.length === 30, "辞書は30項目");
-expect(new Set(RULES.map(r => r.id)).size === 30, "IDが重複しない");
+expect(RULES.length === 31, "辞書は31項目");
+expect(new Set(RULES.map(r => r.id)).size === 31, "IDが重複しない");
 
 const d = run("demo-wifi.txt");
 console.log("demo:", d.danger, "危険 /", d.caution, "注意 / 問題なし:", d.safe.join(","));
@@ -45,5 +45,17 @@ const r6 = A("第1条（禁止事項）\n人種、民族、信条、性別によ
 expect(!has(r6, "PRV-02") && !has(r6, "SUS-01"), "禁止事項の「信条」・サービス内容の予告なし変更 → 不検出");
 const r7 = A("第1条（停止）\n当社は、事前の通知なく、ユーザーのアカウントを停止できるものとします。\n第2条\n無料です。");
 expect(has(r7, "SUS-01"), "通知なしのアカウント停止 → SUS-01");
+
+// 定期購入（SUB-01、2026-11-24 追加）
+const t1 = A("第1条（定期コース）\n本商品は初回お試し500円の定期コースです。\n第2条（解約）\n4回目のお届けまでは解約することはできません。\n第3条（お届け）\n毎月1回お届けします。");
+expect(has(t1, "SUB-01", "danger"), "4回目まで解約できない → SUB-01 危険");
+const t2 = A("第1条（定期便）\n定期便は、最低3回の継続購入が条件となります。");
+expect(has(t2, "SUB-01", "caution"), "最低3回の継続購入 → SUB-01 注意");
+const t3 = A("第1条（解約）\n解約は次回お届け予定日の10日前までにご連絡ください。");
+expect(has(t3, "SUB-01", "caution"), "次回お届け日の10日前まで → SUB-01 注意");
+const t4 = A("第1条（定期便）\n定期便に回数のしばりはありません。いつでも解約できます。");
+expect(!has(t4, "SUB-01"), "回数しばりなし・いつでも解約 → 不検出");
+const t5 = A("第1条（料金）\n月1回の配送です。解約した月の返金はできません。");
+expect(!has(t5, "SUB-01", "danger"), "解約月の返金なし → SUB-01 危険にしない");
 console.log(fail ? `\n${fail} 件失敗` : "\nすべて成功");
 process.exit(fail ? 1 : 0);

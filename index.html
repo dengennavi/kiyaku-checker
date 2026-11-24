@@ -31,13 +31,13 @@
   <ul class="card legend">
     <li><i class="dot danger"></i><b>要確認</b> — 同意前に必ず読みたい条項</li>
     <li><i class="dot caution"></i><b>確認推奨</b> — 読んで判断したい条項</li>
-    <li><i class="dot safe"></i><b>該当なし</b> — 30項目のルールに当たらない条項</li>
+    <li><i class="dot safe"></i><b>該当なし</b> — 31項目のルールに当たらない条項</li>
   </ul>
   <button class="btn primary block" data-go="S02">判定をはじめる</button>
   <button class="btn ghost block" id="demo">🐱 デモ規約で試す</button>
   <a class="btn line block" href="https://line.me/R/ti/p/@823qtyqg" target="_blank" rel="noopener">LINEで使う（友だち追加）</a>
   <p class="sub muted">LINEのトークに規約を貼って送るだけでも判定できます</p>
-  <p class="sub">登録不要・無料｜<a href="#" data-go="RULES">判定基準30項目を公開</a>｜<a href="services/">サービス別 規約まとめ</a></p>
+  <p class="sub">登録不要・無料｜<a href="#" data-go="RULES">判定基準31項目を公開</a>｜<a href="services/">サービス別 規約まとめ</a>｜<a href="teiki/">定期購入の落とし穴</a></p>
   <a class="btn ghost block" href="sub-finder/">💳 毎月の引き落とし、何に払っている？（カード明細を貼るだけ）</a>
   <p class="trust-big">🔒 貼った規約は1文字もサーバーに送信しません<br><small>判定はすべてあなたのブラウザの中で行います</small></p>
   <p class="sub muted">公開ルールとの一致を機械的に表示するツールです。法的助言ではありません</p>
@@ -65,7 +65,7 @@
   <p class="big">気になる条項を確認しています…</p>
   <ul class="steps">
     <li data-step="0">文章を条項ごとに分割</li>
-    <li data-step="1">判定辞書30項目と照合</li>
+    <li data-step="1">判定辞書31項目と照合</li>
     <li data-step="2">根拠となる条文を特定</li>
   </ul>
   <div class="progress"><div id="bar"></div></div>
@@ -84,7 +84,7 @@
   <p id="verdict" class="verdict"></p>
   <ul id="findings" class="findings"></ul>
   <details class="card safe-list"><summary id="safeHead"></summary><p id="safeList"></p></details>
-  <p class="sub"><a href="#" data-go="RULES">判定基準（30項目の公開ルール）›</a></p>
+  <p class="sub"><a href="#" data-go="RULES">判定基準（31項目の公開ルール）›</a></p>
   <button id="shareX" class="btn x block">𝕏 結果をシェア</button>
   <button class="btn ghost block" data-go="S02" data-clear>別の規約を判定</button>
 
@@ -145,13 +145,13 @@
 
 <!-- 判定基準 -->
 <section id="RULES" class="screen" hidden>
-  <header class="bar"><button class="back" data-back>‹</button><h2>判定基準（30項目）</h2></header>
+  <header class="bar"><button class="back" data-back>‹</button><h2>判定基準（31項目）</h2></header>
   <p class="sub">消費者契約法・民法（定型約款）・個人情報保護法などをもとにした公開ルールです。<span id="dictVer"></span></p>
   <ol id="ruleList" class="rule-list"></ol>
 </section>
 
 </main>
-<footer><p>規約チェッカーは、公開している30項目のチェックルールとの一致を機械的に表示する無料ツールです。個別の契約について法律上の有効・無効を判断するものではなく、法的助言ではありません。表示されない条項にも問題がある可能性があります。個別の紛争のご相談はお受けしていません。重要な契約は弁護士等の専門家、または消費生活センター（188）にご相談ください。入力された規約はサーバーに送信・保存されません。</p><p><a href="legal.html">利用規約・プライバシーポリシー</a>｜運営：ノードワークス｜<a href="https://x.com/kiyaku_checker" target="_blank" rel="noopener">X @kiyaku_checker</a></p></footer>
+<footer><p>規約チェッカーは、公開している31項目のチェックルールとの一致を機械的に表示する無料ツールです。個別の契約について法律上の有効・無効を判断するものではなく、法的助言ではありません。表示されない条項にも問題がある可能性があります。個別の紛争のご相談はお受けしていません。重要な契約は弁護士等の専門家、または消費生活センター（188）にご相談ください。入力された規約はサーバーに送信・保存されません。</p><p><a href="legal.html">利用規約・プライバシーポリシー</a>｜運営：ノードワークス｜<a href="https://x.com/kiyaku_checker" target="_blank" rel="noopener">X @kiyaku_checker</a></p></footer>
 
 <script src="config.js"></script>
 <script src="rules.js"></script>

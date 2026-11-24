@@ -69,7 +69,7 @@
     $("nDanger").textContent = r.danger; $("nCaution").textContent = r.caution; $("nSafe").textContent = r.safe.length;
     $("verdict").textContent = r.danger ? "⚠️ 同意する前に、🔴の条項を必ず確認してください"
       : r.caution ? "🔴の条項は検出されませんでした。🟡の条項は読んでおきましょう"
-      : "30項目のルールに該当する条項は検出されませんでした（規約全体が問題ないという意味ではありません）";
+      : "31項目のルールに該当する条項は検出されませんでした（規約全体が問題ないという意味ではありません）";
     const ul = $("findings"); ul.innerHTML = "";
     r.findings.forEach(f => {
       const li = document.createElement("li"); li.className = f.sev;
@@ -154,7 +154,7 @@
   // ── シェア ──
   function share() {
     if (!last) return;
-    const txt = `規約を30項目でチェックしたら 🔴要確認${last.danger}件 / 🟡確認推奨${last.caution}件 でした。\n貼るだけで気になる条項がわかる #規約チェッカー`;
+    const txt = `規約を31項目でチェックしたら 🔴要確認${last.danger}件 / 🟡確認推奨${last.caution}件 でした。\n貼るだけで気になる条項がわかる #規約チェッカー`;
     const url = C.siteUrl || location.href.split("#")[0];
     if (navigator.share && this && this.id === "share") return navigator.share({ text: txt, url }).catch(() => {});
     window.open("https://x.com/intent/post?text=" + encodeURIComponent(txt) + "&url=" + encodeURIComponent(url), "_blank", "noopener");
